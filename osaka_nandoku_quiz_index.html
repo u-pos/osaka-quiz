@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>大阪 難読地名クイズ</title>
+  <style>
+    :root {
+      --bg1:#0f172a;
+      --bg2:#1e293b;
+      --card:#ffffff;
+      --text:#111827;
+      --sub:#64748b;
+      --accent:#2563eb;
+      --accent2:#f97316;
+      --ok:#16a34a;
+      --ng:#dc2626;
+      --border:#e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px 12px;
+    }
+    .app {
+      width: 100%;
+      max-width: 760px;
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+      overflow: hidden;
+    }
+    .header {
+      padding: 28px 24px 18px;
+      background: linear-gradient(135deg, #1d4ed8, #0f172a);
+      color: #fff;
+    }
+    .title {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 800;
+      margin: 0 0 10px;
+      line-height: 1.15;
+    }
+    .subtitle {
+      margin: 0;
+      line-height: 1.7;
+      opacity: .92;
+      font-size: 15px;
+    }
+    .content { padding: 22px; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+    .mode-grid, .action-grid {
+      display: grid;
+      gap: 14px;
+    }
+    .mode-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      background: #fff;
+    }
+    .mode-card {
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      cursor: pointer;
+      transition: .18s ease;
+      background: #fff;
+    }
+    .mode-card:hover { transform: translateY(-2px); border-color: #93c5fd; }
+    .mode-card h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+    .mode-card p {
+      margin: 0;
+      color: var(--sub);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+      background: var(--accent);
+    }
+    .tag.hard { background: var(--accent2); }
+    .quiz-top {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .progress-wrap {
+      display: grid;
+      gap: 10px;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .progress {
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      transition: width .25s ease;
+    }
+    .status-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 13px;
+      font-weight: 700;
+      justify-self: start;
+    }
+    .timer {
+      min-width: 94px;
+      text-align: center;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-weight: 800;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+    }
+    .timer.danger {
+      color: var(--ng);
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+    .score-mini {
+      min-width: 82px;
+      text-align: center;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-weight: 800;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+    }
+    .question-card {
+      padding: 28px 18px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      text-align: center;
+      background: linear-gradient(180deg, #fff, #f8fafc);
+      margin-bottom: 16px;
+    }
+    .question-label {
+      color: var(--sub);
+      font-size: 14px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .question-text {
+      font-size: clamp(40px, 10vw, 72px);
+      font-weight: 900;
+      letter-spacing: .06em;
+      line-height: 1.1;
+      word-break: break-all;
+    }
+    .hint {
+      margin-top: 12px;
+      color: var(--sub);
+      font-size: 14px;
+    }
+    .answer-box {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 2px solid #cbd5e1;
+      font-size: 22px;
+      outline: none;
+    }
+    input[type="text"]:focus { border-color: #60a5fa; }
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    .primary { background: var(--accent); color: #fff; }
+    .secondary { background: #e2e8f0; color: #0f172a; }
+    .ghost { background: #f8fafc; color: #334155; border: 1px solid var(--border); }
+    .danger { background: #ef4444; color: #fff; }
+    .feedback {
+      min-height: 82px;
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      line-height: 1.75;
+      font-size: 15px;
+    }
+    .feedback.ok { background: #f0fdf4; border-color: #86efac; }
+    .feedback.ng { background: #fef2f2; border-color: #fca5a5; }
+    .result-score {
+      text-align: center;
+      padding: 14px 0 20px;
+    }
+    .result-score .big {
+      font-size: clamp(54px, 12vw, 84px);
+      font-weight: 900;
+      line-height: 1;
+      margin: 10px 0;
+    }
+    .result-score .sub {
+      color: var(--sub);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .review-list {
+      display: grid;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .review-item {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      background: #fff;
+    }
+    .review-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .review-q {
+      font-size: 28px;
+      font-weight: 900;
+    }
+    .badge {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #fff;
+    }
+    .badge.ok { background: var(--ok); }
+    .badge.ng { background: var(--ng); }
+    .review-body {
+      color: #334155;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+    .small-note {
+      margin-top: 14px;
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    @media (max-width: 640px) {
+      .content { padding: 16px; }
+      .header { padding: 24px 18px 16px; }
+      .status-row { grid-template-columns: 1fr 1fr; }
+      .pill { grid-column: 1 / -1; }
+      .btn-row { grid-template-columns: 1fr; }
+      input[type="text"] { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <h1 class="title">大阪 難読地名クイズ</h1>
+      <p class="subtitle">10秒以内に、読み方を<strong>ひらがな</strong>で入力。<br>通常レベルとガチレベルの2モードで遊べます。</p>
+    </div>
+
+    <div class="content">
+      <section id="start-screen" class="screen active">
+        <div class="panel" style="margin-bottom:16px;">
+          <strong>ルール</strong><br>
+          1問ごとに制限時間は10秒です。<br>
+          漢字の地名を見て、読み方をひらがなで入力してください。<br>
+          小さい「ゃゅょっ」、長音のゆれはある程度吸収します。
+        </div>
+
+        <div class="mode-grid">
+          <button class="mode-card" data-mode="normal">
+            <div class="tag">通常レベル</div>
+            <h2>比較的有名</h2>
+            <p>大阪に住んでいない人でも、聞いたことがある難読地名中心。<br>喜連瓜破、放出、十三など。</p>
+          </button>
+
+          <button class="mode-card" data-mode="hard">
+            <div class="tag hard">ガチレベル</div>
+            <h2>大阪人向け</h2>
+            <p>大阪人でも初見では止まりやすいマニアック寄り。<br>点野、柴島、水走、雁多尾畑など。</p>
+          </button>
+        </div>
+
+        <div class="small-note">
+          GitHub Pages向けの単一HTML構成です。<br>
+          このまま <strong>index.html</strong> として公開できます。
+        </div>
+      </section>
+
+      <section id="quiz-screen" class="screen">
+        <div class="quiz-top">
+          <div class="progress-wrap">
+            <div class="progress-meta">
+              <span id="mode-name">通常レベル</span>
+              <span id="question-count">1 / 10</span>
+            </div>
+            <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+          </div>
+
+          <div class="status-row">
+            <div id="mode-pill" class="pill">通常レベル</div>
+            <div id="timer" class="timer">10.0秒</div>
+            <div id="score-mini" class="score-mini">0点</div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-label">この地名の読み方は？</div>
+          <div id="question-text" class="question-text">放出</div>
+          <div class="hint">ひらがなで入力して下さい</div>
+        </div>
+
+        <div class="answer-box">
+          <input id="answer-input" type="text" inputmode="hiragana" autocomplete="off" placeholder="ここにひらがなで入力" />
+          <div class="btn-row">
+            <button id="submit-btn" class="primary">回答する</button>
+            <button id="skip-btn" class="secondary">わからない</button>
+          </div>
+        </div>
+
+        <div id="feedback" class="feedback">回答を入力して「回答する」を押してください。</div>
+      </section>
+
+      <section id="result-screen" class="screen">
+        <div class="result-score">
+          <div id="result-mode" class="tag">通常レベル</div>
+          <div class="big"><span id="final-score">0</span> / <span id="total-score">10</span></div>
+          <div id="result-message" class="sub">おつかれさまでした。</div>
+        </div>
+
+        <div class="action-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); margin-bottom:18px;">
+          <button id="retry-btn" class="primary">同じレベルでもう一回</button>
+          <button id="back-btn" class="secondary">レベル選択に戻る</button>
+          <button id="share-btn" class="ghost">結果をXでシェア</button>
+        </div>
+
+        <div class="panel">
+          <strong>答え合わせ</strong>
+          <div id="review-list" class="review-list"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const QUIZ_DATA = {
+      normal: [
+        { question: '放出', answer: 'はなてん' },
+        { question: '喜連瓜破', answer: 'きれうりわり' },
+        { question: '十三', answer: 'じゅうそう' },
+        { question: '杭全', answer: 'くまた' },
+        { question: '御幣島', answer: 'みてじま' },
+        { question: '遠里小野', answer: 'おりおの' },
+        { question: '野江内代', answer: 'のえうちんだい' },
+        { question: '立売堀', answer: 'いたちぼり' },
+        { question: '我孫子', answer: 'あびこ' },
+        { question: '私市', answer: 'きさいち' },
+        { question: '枚方', answer: 'ひらかた' },
+        { question: '枚岡', answer: 'ひらおか' }
+      ],
+      hard: [
+        { question: '点野', answer: 'しめの' },
+        { question: '柴島', answer: 'くにじま' },
+        { question: '水走', answer: 'みずはい' },
+        { question: '孔舎衙', answer: 'くさか' },
+        { question: '御厨', answer: 'みくりや' },
+        { question: '衣摺', answer: 'きずり' },
+        { question: '私部', answer: 'きさべ' },
+        { question: '雁多尾畑', answer: 'かりんどおばた' },
+        { question: '蔀屋', answer: 'しとみや' },
+        { question: '日下町', answer: 'くさかちょう' }
+      ]
+    };
+
+    const el = {
+      screens: {
+        start: document.getElementById('start-screen'),
+        quiz: document.getElementById('quiz-screen'),
+        result: document.getElementById('result-screen')
+      },
+      modeCards: document.querySelectorAll('.mode-card'),
+      modeName: document.getElementById('mode-name'),
+      modePill: document.getElementById('mode-pill'),
+      questionCount: document.getElementById('question-count'),
+      progressBar: document.getElementById('progress-bar'),
+      timer: document.getElementById('timer'),
+      scoreMini: document.getElementById('score-mini'),
+      questionText: document.getElementById('question-text'),
+      answerInput: document.getElementById('answer-input'),
+      submitBtn: document.getElementById('submit-btn'),
+      skipBtn: document.getElementById('skip-btn'),
+      feedback: document.getElementById('feedback'),
+      resultMode: document.getElementById('result-mode'),
+      finalScore: document.getElementById('final-score'),
+      totalScore: document.getElementById('total-score'),
+      resultMessage: document.getElementById('result-message'),
+      reviewList: document.getElementById('review-list'),
+      retryBtn: document.getElementById('retry-btn'),
+      backBtn: document.getElementById('back-btn'),
+      shareBtn: document.getElementById('share-btn')
+    };
+
+    const state = {
+      mode: null,
+      questions: [],
+      currentIndex: 0,
+      score: 0,
+      answers: [],
+      timerId: null,
+      timeLeft: 10,
+      ticking: false,
+      deadline: 0,
+      locked: false
+    };
+
+    function shuffle(arr) {
+      const copied = [...arr];
+      for (let i = copied.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copied[i], copied[j]] = [copied[j], copied[i]];
+      }
+      return copied;
+    }
+
+    function showScreen(name) {
+      Object.values(el.screens).forEach(s => s.classList.remove('active'));
+      el.screens[name].classList.add('active');
+    }
+
+    function normalizeKana(text) {
+      return (text || '')
+        .trim()
+        .toLowerCase()
+        .replace(/[ァ-ヶ]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0x60))
+        .replace(/[\sー－ｰ・,，.。]/g, '')
+        .normalize('NFKC');
+    }
+
+    function labelForMode(mode) {
+      return mode === 'hard' ? 'ガチレベル' : '通常レベル';
+    }
+
+    function startGame(mode) {
+      state.mode = mode;
+      state.questions = shuffle(QUIZ_DATA[mode]);
+      state.currentIndex = 0;
+      state.score = 0;
+      state.answers = [];
+      el.scoreMini.textContent = '0点';
+      el.modeName.textContent = labelForMode(mode);
+      el.modePill.textContent = labelForMode(mode);
+      showScreen('quiz');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      clearTimer();
+      state.locked = false;
+      const total = state.questions.length;
+      const current = state.questions[state.currentIndex];
+      el.questionText.textContent = current.question;
+      el.questionCount.textContent = `${state.currentIndex + 1} / ${total}`;
+      el.progressBar.style.width = `${(state.currentIndex / total) * 100}%`;
+      el.answerInput.value = '';
+      el.answerInput.disabled = false;
+      el.submitBtn.disabled = false;
+      el.skipBtn.disabled = false;
+      el.feedback.className = 'feedback';
+      el.feedback.textContent = '回答を入力して「回答する」を押してください。';
+      el.answerInput.focus();
+      startTimer();
+    }
+
+    function startTimer() {
+      state.timeLeft = 10;
+      state.deadline = performance.now() + 10000;
+      updateTimerView();
+      state.timerId = setInterval(() => {
+        const remain = Math.max(0, (state.deadline - performance.now()) / 1000);
+        state.timeLeft = remain;
+        updateTimerView();
+        if (remain <= 0) {
+          handleAnswer(true, '');
+        }
+      }, 50);
+    }
+
+    function clearTimer() {
+      if (state.timerId) {
+        clearInterval(state.timerId);
+        state.timerId = null;
+      }
+    }
+
+    function updateTimerView() {
+      el.timer.textContent = `${state.timeLeft.toFixed(1)}秒`;
+      el.timer.classList.toggle('danger', state.timeLeft <= 3);
+    }
+
+    function handleAnswer(isTimeout = false, forcedInput = null) {
+      if (state.locked) return;
+      state.locked = true;
+      clearTimer();
+
+      const current = state.questions[state.currentIndex];
+      const rawInput = forcedInput !== null ? forcedInput : el.answerInput.value;
+      const user = normalizeKana(rawInput);
+      const correct = normalizeKana(current.answer);
+      const isCorrect = !isTimeout && user !== '' && user === correct;
+
+      if (isCorrect) state.score += 1;
+      el.scoreMini.textContent = `${state.score}点`;
+
+      el.answerInput.disabled = true;
+      el.submitBtn.disabled = true;
+      el.skipBtn.disabled = true;
+
+      if (isTimeout) {
+        el.feedback.className = 'feedback ng';
+        el.feedback.innerHTML = `時間切れ。<br>正解は <strong>${current.answer}</strong> です。`;
+      } else if (user === '') {
+        el.feedback.className = 'feedback ng';
+        el.feedback.innerHTML = `未回答です。<br>正解は <strong>${current.answer}</strong> です。`;
+      } else if (isCorrect) {
+        el.feedback.className = 'feedback ok';
+        el.feedback.innerHTML = `正解です。<strong>${current.answer}</strong>`;
+      } else {
+        el.feedback.className = 'feedback ng';
+        el.feedback.innerHTML = `不正解です。あなたの回答：<strong>${escapeHtml(rawInput)}</strong><br>正解は <strong>${current.answer}</strong> です。`;
+      }
+
+      state.answers.push({
+        question: current.question,
+        correctAnswer: current.answer,
+        userAnswer: rawInput,
+        isCorrect,
+        isTimeout
+      });
+
+      setTimeout(nextStep, 1200);
+    }
+
+    function nextStep() {
+      state.currentIndex += 1;
+      if (state.currentIndex >= state.questions.length) {
+        showResult();
+      } else {
+        renderQuestion();
+      }
+    }
+
+    function showResult() {
+      clearTimer();
+      showScreen('result');
+      const total = state.questions.length;
+      el.progressBar.style.width = '100%';
+      el.resultMode.textContent = labelForMode(state.mode);
+      el.resultMode.className = 'tag' + (state.mode === 'hard' ? ' hard' : '');
+      el.finalScore.textContent = state.score;
+      el.totalScore.textContent = total;
+      el.resultMessage.innerHTML = buildResultMessage(state.score, total, state.mode);
+      el.reviewList.innerHTML = state.answers.map(item => `
+        <div class="review-item">
+          <div class="review-head">
+            <div class="review-q">${item.question}</div>
+            <div class="badge ${item.isCorrect ? 'ok' : 'ng'}">${item.isCorrect ? '正解' : '不正解'}</div>
+          </div>
+          <div class="review-body">
+            あなたの回答：<strong>${item.userAnswer ? escapeHtml(item.userAnswer) : (item.isTimeout ? '時間切れ' : '未回答')}</strong><br>
+            正解：<strong>${item.correctAnswer}</strong>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function buildResultMessage(score, total, mode) {
+      const rate = score / total;
+      if (mode === 'hard') {
+        if (rate === 1) return '満点です。大阪ローカル地名の沼にかなり浸かっています。';
+        if (rate >= 0.8) return 'かなり強いです。大阪人でも十分通用するレベルです。';
+        if (rate >= 0.5) return '健闘しています。地元感はあるけど、まだ取りこぼしありです。';
+        return 'ここは普通に難しいです。知らないと読めない問題ばかりです。';
+      }
+      if (rate === 1) return '満点です。大阪の定番難読地名はかなり押さえています。';
+      if (rate >= 0.8) return 'かなり良いです。大阪ネタに強いほうです。';
+      if (rate >= 0.5) return '半分超え。定番どころはそこそこ読めています。';
+      return 'まずは通常レベルを周回すると定番がかなり身につきます。';
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    el.modeCards.forEach(btn => {
+      btn.addEventListener('click', () => startGame(btn.dataset.mode));
+    });
+
+    el.submitBtn.addEventListener('click', () => handleAnswer(false));
+    el.skipBtn.addEventListener('click', () => handleAnswer(false, ''));
+    el.answerInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleAnswer(false);
+    });
+    el.retryBtn.addEventListener('click', () => startGame(state.mode));
+    el.backBtn.addEventListener('click', () => {
+      clearTimer();
+      showScreen('start');
+    });
+    el.shareBtn.addEventListener('click', () => {
+      const text = `大阪 難読地名クイズ（${labelForMode(state.mode)}）で ${state.score}/${state.questions.length} 点でした。`;
+      const url = location.href;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+    });
+  </script>
+</body>
+</html>
