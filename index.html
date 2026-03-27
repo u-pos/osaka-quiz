@@ -17,7 +17,9 @@
       --ng:#dc2626;
       --border:#e5e7eb;
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
@@ -29,6 +31,7 @@
       align-items: flex-start;
       padding: 24px 12px;
     }
+
     .app {
       width: 100%;
       max-width: 760px;
@@ -37,37 +40,48 @@
       box-shadow: 0 24px 70px rgba(0,0,0,.28);
       overflow: hidden;
     }
+
     .header {
       padding: 28px 24px 18px;
       background: linear-gradient(135deg, #1d4ed8, #0f172a);
       color: #fff;
     }
+
     .title {
       font-size: clamp(28px, 5vw, 42px);
       font-weight: 800;
       margin: 0 0 10px;
       line-height: 1.15;
     }
+
     .subtitle {
       margin: 0;
       line-height: 1.7;
       opacity: .92;
       font-size: 15px;
     }
+
     .content { padding: 22px; }
+
     .screen { display: none; }
     .screen.active { display: block; }
+
     .mode-grid, .action-grid {
       display: grid;
       gap: 14px;
     }
-    .mode-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+    .mode-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
     .panel {
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 18px;
       background: #fff;
     }
+
     .mode-card {
       border: 2px solid var(--border);
       border-radius: 20px;
@@ -76,17 +90,24 @@
       transition: .18s ease;
       background: #fff;
     }
-    .mode-card:hover { transform: translateY(-2px); border-color: #93c5fd; }
+
+    .mode-card:hover {
+      transform: translateY(-2px);
+      border-color: #93c5fd;
+    }
+
     .mode-card h2 {
       margin: 0 0 8px;
       font-size: 24px;
     }
+
     .mode-card p {
       margin: 0;
       color: var(--sub);
       line-height: 1.7;
       font-size: 14px;
     }
+
     .tag {
       display: inline-block;
       padding: 6px 10px;
@@ -97,51 +118,52 @@
       color: #fff;
       background: var(--accent);
     }
-    .tag.hard { background: var(--accent2); }
+
+    .tag.hard {
+      background: var(--accent2);
+    }
+
     .quiz-top {
       display: grid;
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
+
     .progress-wrap {
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
+
     .progress-meta {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       gap: 12px;
       font-size: 14px;
       font-weight: 700;
     }
+
     .progress {
       height: 12px;
       background: #e5e7eb;
       border-radius: 999px;
       overflow: hidden;
     }
+
     .progress-bar {
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, #2563eb, #60a5fa);
       transition: width .25s ease;
     }
+
     .status-row {
       display: grid;
-      grid-template-columns: 1fr auto auto;
+      grid-template-columns: 1fr auto;
       gap: 10px;
       align-items: center;
     }
-    .pill {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: #eff6ff;
-      color: #1d4ed8;
-      font-size: 13px;
-      font-weight: 700;
-      justify-self: start;
-    }
+
     .timer {
       min-width: 94px;
       text-align: center;
@@ -150,12 +172,15 @@
       font-weight: 800;
       background: #f8fafc;
       border: 1px solid var(--border);
+      justify-self: end;
     }
+
     .timer.danger {
       color: var(--ng);
       background: #fef2f2;
       border-color: #fecaca;
     }
+
     .score-mini {
       min-width: 82px;
       text-align: center;
@@ -164,21 +189,18 @@
       font-weight: 800;
       background: #f8fafc;
       border: 1px solid var(--border);
+      justify-self: start;
     }
+
     .question-card {
-      padding: 28px 18px;
+      padding: 22px 16px;
       border: 1px solid var(--border);
       border-radius: 24px;
       text-align: center;
       background: linear-gradient(180deg, #fff, #f8fafc);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
-    .question-label {
-      color: var(--sub);
-      font-size: 14px;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
+
     .question-text {
       font-size: clamp(40px, 10vw, 72px);
       font-weight: 900;
@@ -186,16 +208,13 @@
       line-height: 1.1;
       word-break: break-all;
     }
-    .hint {
-      margin-top: 12px;
-      color: var(--sub);
-      font-size: 14px;
-    }
+
     .answer-box {
       display: grid;
       gap: 10px;
       margin-bottom: 12px;
     }
+
     input[type="text"] {
       width: 100%;
       padding: 16px 18px;
@@ -204,12 +223,17 @@
       font-size: 22px;
       outline: none;
     }
-    input[type="text"]:focus { border-color: #60a5fa; }
+
+    input[type="text"]:focus {
+      border-color: #60a5fa;
+    }
+
     .btn-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
+
     button {
       appearance: none;
       border: none;
@@ -220,11 +244,27 @@
       cursor: pointer;
       transition: .18s ease;
     }
-    button:hover { transform: translateY(-1px); }
-    .primary { background: var(--accent); color: #fff; }
-    .secondary { background: #e2e8f0; color: #0f172a; }
-    .ghost { background: #f8fafc; color: #334155; border: 1px solid var(--border); }
-    .danger { background: #ef4444; color: #fff; }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .ghost {
+      background: #f8fafc;
+      color: #334155;
+      border: 1px solid var(--border);
+    }
+
     .feedback {
       min-height: 82px;
       border-radius: 18px;
@@ -234,34 +274,48 @@
       line-height: 1.75;
       font-size: 15px;
     }
-    .feedback.ok { background: #f0fdf4; border-color: #86efac; }
-    .feedback.ng { background: #fef2f2; border-color: #fca5a5; }
+
+    .feedback.ok {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+
+    .feedback.ng {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+
     .result-score {
       text-align: center;
       padding: 14px 0 20px;
     }
+
     .result-score .big {
       font-size: clamp(54px, 12vw, 84px);
       font-weight: 900;
       line-height: 1;
       margin: 10px 0;
     }
+
     .result-score .sub {
       color: var(--sub);
       font-size: 15px;
       line-height: 1.7;
     }
+
     .review-list {
       display: grid;
       gap: 12px;
       margin: 20px 0;
     }
+
     .review-item {
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 14px;
       background: #fff;
     }
+
     .review-head {
       display: flex;
       justify-content: space-between;
@@ -269,10 +323,12 @@
       align-items: center;
       margin-bottom: 6px;
     }
+
     .review-q {
       font-size: 28px;
       font-weight: 900;
     }
+
     .badge {
       font-size: 12px;
       font-weight: 800;
@@ -280,26 +336,37 @@
       border-radius: 999px;
       color: #fff;
     }
+
     .badge.ok { background: var(--ok); }
     .badge.ng { background: var(--ng); }
+
     .review-body {
       color: #334155;
       line-height: 1.8;
       font-size: 14px;
     }
-    .small-note {
-      margin-top: 14px;
-      color: var(--sub);
-      font-size: 13px;
-      line-height: 1.7;
-    }
+
     @media (max-width: 640px) {
-      .content { padding: 16px; }
-      .header { padding: 24px 18px 16px; }
-      .status-row { grid-template-columns: 1fr 1fr; }
-      .pill { grid-column: 1 / -1; }
-      .btn-row { grid-template-columns: 1fr; }
-      input[type="text"] { font-size: 20px; }
+      .content { padding: 14px; }
+      .header { padding: 20px 16px 14px; }
+      .quiz-top { gap: 8px; margin-bottom: 10px; }
+      .progress-meta {
+        justify-content: flex-end;
+        font-size: 13px;
+      }
+      .status-row {
+        grid-template-columns: 1fr auto;
+      }
+      .question-card {
+        padding: 18px 12px;
+        margin-bottom: 10px;
+      }
+      .btn-row {
+        grid-template-columns: 1fr;
+      }
+      input[type="text"] {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -307,7 +374,7 @@
   <div class="app">
     <div class="header">
       <h1 class="title">大阪 難読地名クイズ</h1>
-      <p class="subtitle">10秒以内に、読み方を<strong>ひらがな</strong>で入力。<br>通常レベルとガチレベルの2モードで遊べます。</p>
+      <p class="subtitle">10秒以内に、読み方をひらがなで入力。</p>
     </div>
 
     <div class="content">
@@ -320,15 +387,15 @@
 
         <div class="mode-grid">
           <button class="mode-card" data-mode="normal">
-            <div class="tag">初級レベル</div>
+            <div class="tag">通常レベル</div>
             <h2>比較的有名</h2>
-            <p>大阪に住んでいない人向け。<br>大阪の有名な難読地名<br></p>
+            <p>大阪に住んでいない人でも、クイズ番組などで聞いたことがある難読地名。</p>
           </button>
 
           <button class="mode-card" data-mode="hard">
-            <div class="tag hard">上級レベル</div>
+            <div class="tag hard">ガチレベル</div>
             <h2>大阪人向け</h2>
-            <p>大阪人でも読めないかも！？<br>大阪のマニアックな難読地名</p>
+            <p>大阪人でも読めない人かも！？大阪のマニアックな難読地名</p>
           </button>
         </div>
       </section>
@@ -337,27 +404,31 @@
         <div class="quiz-top">
           <div class="progress-wrap">
             <div class="progress-meta">
-              <span id="mode-name">通常レベル</span>
               <span id="question-count">1 / 10</span>
             </div>
-            <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+            <div class="progress">
+              <div id="progress-bar" class="progress-bar"></div>
+            </div>
           </div>
 
           <div class="status-row">
-            <div id="mode-pill" class="pill">通常レベル</div>
-            <div id="timer" class="timer">10.0秒</div>
             <div id="score-mini" class="score-mini">0点</div>
+            <div id="timer" class="timer">10.0秒</div>
           </div>
         </div>
 
         <div class="question-card">
-          <div class="question-label">この地名の読み方は？</div>
           <div id="question-text" class="question-text">放出</div>
-          <div class="hint">ひらがなで入力して下さい</div>
         </div>
 
         <div class="answer-box">
-          <input id="answer-input" type="text" inputmode="hiragana" autocomplete="off" placeholder="ここにひらがなで入力" />
+          <input
+            id="answer-input"
+            type="text"
+            inputmode="hiragana"
+            autocomplete="off"
+            placeholder="ここにひらがなで入力"
+          />
           <div class="btn-row">
             <button id="submit-btn" class="primary">回答する</button>
             <button id="skip-btn" class="secondary">わからない</button>
@@ -390,11 +461,11 @@
 
   <script>
     const QUIZ_DATA = {
-      normal: [        
+      normal: [
+ normal: [        
         { question: '野江内代', answer: 'のえうちんだい' },
         { question: '我孫子', answer: 'あびこ' },
         { question: '枚方', answer: 'ひらかた' },
-        { question: '枚岡', answer: 'ひらおか' },
         { question: '住道', answer: 'すみのどう' },
         { question: '御厨', answer: 'みくりや' },
         { question: '松屋町', answer: 'まつやまち' },
@@ -417,7 +488,6 @@
         { question: '私市', answer: 'きさいち' },
         { question: '道修町', answer: 'どしょうまち' },
         { question: '衣摺', answer: 'きずり' },
-        { question: '雁多尾畑', answer: 'かりんどおばた' },
         { question: '住道矢田', answer: 'すんじやた' },
         { question: '額田', answer: 'ぬかた' },
         { question: '大蓮', answer: 'おおはす' },
@@ -434,8 +504,6 @@
         result: document.getElementById('result-screen')
       },
       modeCards: document.querySelectorAll('.mode-card'),
-      modeName: document.getElementById('mode-name'),
-      modePill: document.getElementById('mode-pill'),
       questionCount: document.getElementById('question-count'),
       progressBar: document.getElementById('progress-bar'),
       timer: document.getElementById('timer'),
@@ -463,7 +531,6 @@
       answers: [],
       timerId: null,
       timeLeft: 10,
-      ticking: false,
       deadline: 0,
       locked: false
     };
@@ -478,7 +545,7 @@
     }
 
     function showScreen(name) {
-      Object.values(el.screens).forEach(s => s.classList.remove('active'));
+      Object.values(el.screens).forEach(screen => screen.classList.remove('active'));
       el.screens[name].classList.add('active');
     }
 
@@ -502,8 +569,6 @@
       state.score = 0;
       state.answers = [];
       el.scoreMini.textContent = '0点';
-      el.modeName.textContent = labelForMode(mode);
-      el.modePill.textContent = labelForMode(mode);
       showScreen('quiz');
       renderQuestion();
     }
@@ -511,18 +576,22 @@
     function renderQuestion() {
       clearTimer();
       state.locked = false;
+
       const total = state.questions.length;
       const current = state.questions[state.currentIndex];
+
       el.questionText.textContent = current.question;
       el.questionCount.textContent = `${state.currentIndex + 1} / ${total}`;
       el.progressBar.style.width = `${(state.currentIndex / total) * 100}%`;
+
       el.answerInput.value = '';
       el.answerInput.disabled = false;
       el.submitBtn.disabled = false;
       el.skipBtn.disabled = false;
+
       el.feedback.className = 'feedback';
       el.feedback.textContent = '回答を入力して「回答する」を押してください。';
-      el.answerInput.focus();
+
       startTimer();
     }
 
@@ -530,10 +599,12 @@
       state.timeLeft = 10;
       state.deadline = performance.now() + 10000;
       updateTimerView();
+
       state.timerId = setInterval(() => {
         const remain = Math.max(0, (state.deadline - performance.now()) / 1000);
         state.timeLeft = remain;
         updateTimerView();
+
         if (remain <= 0) {
           handleAnswer(true, '');
         }
@@ -563,9 +634,11 @@
       const correct = normalizeKana(current.answer);
       const isCorrect = !isTimeout && user !== '' && user === correct;
 
-      if (isCorrect) state.score += 1;
-      el.scoreMini.textContent = `${state.score}点`;
+      if (isCorrect) {
+        state.score += 1;
+      }
 
+      el.scoreMini.textContent = `${state.score}点`;
       el.answerInput.disabled = true;
       el.submitBtn.disabled = true;
       el.skipBtn.disabled = true;
@@ -592,11 +665,12 @@
         isTimeout
       });
 
-      setTimeout(nextStep, 2400);
+      setTimeout(nextStep, 3500);
     }
 
     function nextStep() {
       state.currentIndex += 1;
+
       if (state.currentIndex >= state.questions.length) {
         showResult();
       } else {
@@ -607,6 +681,7 @@
     function showResult() {
       clearTimer();
       showScreen('result');
+
       const total = state.questions.length;
       el.progressBar.style.width = '100%';
       el.resultMode.textContent = labelForMode(state.mode);
@@ -614,6 +689,7 @@
       el.finalScore.textContent = state.score;
       el.totalScore.textContent = total;
       el.resultMessage.innerHTML = buildResultMessage(state.score, total, state.mode);
+
       el.reviewList.innerHTML = state.answers.map(item => `
         <div class="review-item">
           <div class="review-head">
@@ -630,12 +706,14 @@
 
     function buildResultMessage(score, total, mode) {
       const rate = score / total;
+
       if (mode === 'hard') {
         if (rate === 1) return '満点です。大阪ローカル地名の沼にかなり浸かっています。';
         if (rate >= 0.8) return 'かなり強いです。大阪人でも十分通用するレベルです。';
         if (rate >= 0.5) return '健闘しています。地元感はあるけど、まだ取りこぼしありです。';
         return 'ここは普通に難しいです。知らないと読めない問題ばかりです。';
       }
+
       if (rate === 1) return '満点です。大阪の定番難読地名はかなり押さえています。';
       if (rate >= 0.8) return 'かなり良いです。大阪ネタに強いほうです。';
       if (rate >= 0.5) return '半分超え。定番どころはそこそこ読めています。';
@@ -657,18 +735,27 @@
 
     el.submitBtn.addEventListener('click', () => handleAnswer(false));
     el.skipBtn.addEventListener('click', () => handleAnswer(false, ''));
+
     el.answerInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') handleAnswer(false);
+      if (e.key === 'Enter') {
+        handleAnswer(false);
+      }
     });
+
     el.retryBtn.addEventListener('click', () => startGame(state.mode));
+
     el.backBtn.addEventListener('click', () => {
       clearTimer();
       showScreen('start');
     });
+
     el.shareBtn.addEventListener('click', () => {
       const text = `大阪 難読地名クイズ（${labelForMode(state.mode)}）で ${state.score}/${state.questions.length} 点でした。`;
       const url = location.href;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+      window.open(
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+        '_blank'
+      );
     });
   </script>
 </body>
