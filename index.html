@@ -396,31 +396,41 @@
 
   <script>
     const QUIZ_DATA = {
-      normal: [
-        { question: '放出', answer: 'はなてん' },
-        { question: '喜連瓜破', answer: 'きれうりわり' },
-        { question: '十三', answer: 'じゅうそう' },
-        { question: '杭全', answer: 'くまた' },
-        { question: '御幣島', answer: 'みてじま' },
-        { question: '遠里小野', answer: 'おりおの' },
+      normal: [        
         { question: '野江内代', answer: 'のえうちんだい' },
         { question: '立売堀', answer: 'いたちぼり' },
         { question: '我孫子', answer: 'あびこ' },
-        { question: '私市', answer: 'きさいち' },
         { question: '枚方', answer: 'ひらかた' },
-        { question: '枚岡', answer: 'ひらおか' }
-      ],
-      hard: [
-        { question: '点野', answer: 'しめの' },
-        { question: '柴島', answer: 'くにじま' },
-        { question: '水走', answer: 'みずはい' },
-        { question: '孔舎衙', answer: 'くさか' },
+        { question: '枚岡', answer: 'ひらおか' },
+        { question: '住道', answer: 'すみのどう' },
         { question: '御厨', answer: 'みくりや' },
+        { question: '松屋町', answer: 'まつやまち' },
+        { question: '中百舌鳥', answer: 'なかもず' },
+        { question: '鴫野', answer: 'しぎの' },
+        { question: '羽曳野', answer: 'はびきの' },
+        { question: '此花', answer: 'このはな' }
+        { question: '御幣島', answer: 'みてじま' },
+        { question: '関目', answer: 'せきめ' },
+        { question: '玉造', answer: 'たまつくり' },
+        { question: '粉浜', answer: 'こはま' },
+　      { question: '靱本町', answer: 'うつぼほんまち' },
+        ],
+      hard: [
+        { question: '杭全', answer: 'くまた' },
+        { question: '千躰', answer: 'せんだい' },
+        { question: '遠里小野', answer: 'おりおの' },
+        { question: '点野', answer: 'しめの' },
+        { question: '私市', answer: 'きさいち' },
+        { question: '道修町', answer: 'どしょうまち' },
         { question: '衣摺', answer: 'きずり' },
-        { question: '私部', answer: 'きさべ' },
         { question: '雁多尾畑', answer: 'かりんどおばた' },
-        { question: '蔀屋', answer: 'しとみや' },
-        { question: '日下町', answer: 'くさかちょう' }
+        { question: '住道矢田', answer: 'すんじやた' },
+        { question: '額田', answer: 'ぬかた' },
+        { question: '大蓮', answer: 'おおはす' },
+        { question: '道修町', answer: 'どしょうまち' },
+        { question: '柴島', answer: 'くにじま' },
+        { question: '水走', answer: 'みずはい' },       
+        { question: '百舌鳥八幡', answer: 'もずはちまん' },
       ]
     };
 
@@ -494,7 +504,7 @@
 
     function startGame(mode) {
       state.mode = mode;
-      state.questions = shuffle(QUIZ_DATA[mode]);
+      state.questions = shuffle(QUIZ_DATA[mode]).slice(0, 10);
       state.currentIndex = 0;
       state.score = 0;
       state.answers = [];
